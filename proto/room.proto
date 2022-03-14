@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package room;
+
+service Room {
+
+  rpc getDetails (RoomRequest) returns (RoomResponse) {}
+}
+
+message RoomRequest {
+  int32 capacity = 1;
+}
+
+message RoomResponse{
+  repeated RoomDetails rooms = 1;
+}
+
+message RoomDetails {
+  string name = 1;
+  int32 capacity = 2;
+  string office = 3;
+  bool whiteboard = 4;
+  bool projector = 5;
+}
