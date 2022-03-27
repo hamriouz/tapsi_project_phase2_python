@@ -3,6 +3,12 @@ from flask import current_app
 
 
 class Authenticator:
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(Authenticator, cls).__new__(cls)
+        return cls.instance
+
     @staticmethod
     def get_role(token):
         try:
