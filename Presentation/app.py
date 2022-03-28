@@ -4,6 +4,8 @@ from flask import Flask, request, jsonify, make_response
 from Authentication.Authenticator import Authenticator
 from functools import wraps
 
+from Exception.Exceptions import AddRoomException, IncompleteInformationException, NotLoggedInException, \
+    UpdateRoomException, DeleteRoomException
 from Handler.RoomRequestHandler import RequestHandler
 
 app = Flask(__name__)
@@ -55,9 +57,12 @@ def insert_room():
         request_handler.insert_room(record)
         message = {"message": "The room was successfully created!"}
         return make_response(jsonify(message), 200)
-    except:
+    except AddRoomException:
         message = {"message": "Only a logged in admin can add rooms!"}
         return make_response(jsonify(message), 400)
+    except IncompleteInformationException:
+        message = {"message": "Only a logged in admin can add rooms!"}
+        return make_response(jsonify(message), 401)
 
 
 @app.route('/RoomManagement/GetRooms', methods=['GET'])
@@ -66,9 +71,12 @@ def get_rooms():
         request_handler = RequestHandler()
         all_rooms = request_handler.get_all_rooms()
         return {"all rooms": all_rooms}, 200
-    except:
+    except NotLoggedInException:
         message = {"message": "You are not logged in!"}
         return make_response(jsonify(message), 400)
+    except IncompleteInformationException:
+        message = {"message": "Only a logged in admin can add rooms!"}
+        return make_response(jsonify(message), 401)
 
 
 @app.route('/RoomManagement/UpdateRoom', methods=['POST'])
@@ -79,9 +87,12 @@ def update_rooms():
         request_handler.update_room(record)
         new_room_data = request_handler.update_room(record)
         return make_response(jsonify(new_room_data), 200)
-    except:
-        message = {"message": "Only a logged in admin can modify rooms!"}
+    except UpdateRoomException:
+        message = {"message": "Only a logged in admin can update rooms!"}
         return make_response(jsonify(message), 400)
+    except IncompleteInformationException:
+        message = {"message": "Only a logged in admin can add rooms!"}
+        return make_response(jsonify(message), 401)
 
 
 @app.route('/RoomManagement/DeleteRoom', methods=['POST'])
@@ -92,6 +103,10 @@ def delete_rooms():
         request_handler.delete_room(record)
         message = {"message": "The selected room was successfully deleted!"}
         return make_response(jsonify(message), 200)
-    except:
+    except DeleteRoomException:
         message = {"message": "Only a logged in admin can delete rooms!"}
         return make_response(jsonify(message), 400)
+    except IncompleteInformationException:
+        message = {"message": "Only a logged in admin can add rooms!"}
+        return make_response(jsonify(message), 401)
+

@@ -17,7 +17,7 @@ class RequestHandler:
         office = room_record["office"]
         white_board = room_record["white_board"]
         video_projector = room_record["video_projector"]
-        if room_name & capacity & office & white_board & video_projector is not None:
+        if room_name and capacity and office and white_board and video_projector is not None:
             room_domain = RoomDomain()
             room_domain.insert_room(room_name, capacity, office, white_board, video_projector)
         else:
