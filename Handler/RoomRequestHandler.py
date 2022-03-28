@@ -1,4 +1,5 @@
 from Domain.Room import RoomDomain
+from Exception.Exceptions import IncompleteInformationException
 
 
 class RequestHandler:
@@ -21,7 +22,7 @@ class RequestHandler:
             room_domain = RoomDomain()
             room_domain.insert_room(room_name, capacity, office, white_board, video_projector)
         else:
-            raise ValueError('please fill in all the information')
+            raise IncompleteInformationException
 
     @staticmethod
     def update_room(room_record):
@@ -44,7 +45,7 @@ class RequestHandler:
             new_room_data = room_domain.get_room_data(room_name)
             return new_room_data
         else:
-            raise ValueError('please fill in all the information')
+            raise IncompleteInformationException
 
     @staticmethod
     def delete_room(room_record):
@@ -53,7 +54,7 @@ class RequestHandler:
             room_domain = RoomDomain()
             room_domain.delete_room(room_name)
         else:
-            raise ValueError('please fill in all the information')
+            raise IncompleteInformationException
 
     @staticmethod
     def get_all_rooms():

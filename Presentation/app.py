@@ -109,4 +109,3 @@ def delete_rooms():
     except IncompleteInformationException:
         message = {"message": "Only a logged in admin can add rooms!"}
         return make_response(jsonify(message), 401)
-
