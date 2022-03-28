@@ -1,8 +1,7 @@
 import json
 
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, current_app
 from Authentication.Authenticator import Authenticator
-from functools import wraps
 
 from Exception.Exceptions import AddRoomException, IncompleteInformationException, NotLoggedInException, \
     UpdateRoomException, DeleteRoomException
@@ -11,47 +10,46 @@ from Handler.RoomRequestHandler import RequestHandler
 app = Flask(__name__)
 
 
-# todo middleware, getinstance
-
-
-def check_admin():
-    def _check_admin(f):
-        @wraps(f)
-        def __check_admin(*args, **kwargs):
-            token = request.headers.get('Authorization')
+def check_employee_or_admin(function):
+    def wrapper(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if token is not None:
             authenticator = Authenticator()
-            authenticator.authenticate_admin(token)
-            result = f(*args, **kwargs)
-            return result
+            result = authenticator.authenticate_admin(token)
+            if result is None:
+                return current_app.ensure_sync(function)(token, *args, **kwargs)
+            else:
+                result = None
+                result = authenticator.authenticate_employee(token)
+                if result is None:
+                    return current_app.ensure_sync(function)(*args, **kwargs)
+                else:
+                    return {"message": result}, 401
+        return {"message": "Only a logged admin or employee can take this action"}, 401
 
-        return __check_admin
+    wrapper.__name__ = function.__name__
+    return wrapper
 
-    return _check_admin
 
-
-def check_employee_or_admin():
-    def _check_employee_or_admin(f):
-        @wraps(f)
-        def __check_employee_or_admin(*args, **kwargs):
-            token = request.headers.get('Authorization')
+def check_admin(function):
+    def wrapper(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if token is not None:
             authenticator = Authenticator()
-            authenticator.authenticate_admin(token)
-            result = f(*args, **kwargs)
-            return result
+            result = authenticator.authenticate_admin(token)
+            if result is None:
+                return current_app.ensure_sync(function)(*args, **kwargs)
+            else:
+                return {"message": "Only a logged admin can take this action"}, 401
+        else:
+            return {"message": "Only a logged admin can take this action"}, 401
 
-        return __check_employee_or_admin
-
-    return _check_employee_or_admin
-
-
-@app.before_request
-def before_request_func():
-    token = request.headers.get('Authorization')
-    authenticator = Authenticator()
-    authenticator.authenticate_admin(token)
+    wrapper.__name__ = function.__name__
+    return wrapper
 
 
 @app.route('/RoomManagement/InsertRoom', methods=['POST'])
+@check_admin
 def insert_room():
     try:
         request_handler = RequestHandler()
@@ -68,6 +66,7 @@ def insert_room():
 
 
 @app.route('/RoomManagement/GetRooms', methods=['GET'])
+@check_employee_or_admin
 def get_rooms():
     try:
         request_handler = RequestHandler()
@@ -82,6 +81,7 @@ def get_rooms():
 
 
 @app.route('/RoomManagement/UpdateRoom', methods=['POST'])
+@check_admin
 def update_rooms():
     try:
         request_handler = RequestHandler
@@ -98,6 +98,7 @@ def update_rooms():
 
 
 @app.route('/RoomManagement/DeleteRoom', methods=['POST'])
+@check_admin
 def delete_rooms():
     try:
         request_handler = RequestHandler()
