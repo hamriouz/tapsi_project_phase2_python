@@ -2,13 +2,11 @@ from DataAccess.Room import RoomDataAccess
 
 
 class RoomDomain:
-    __instance = None
-
-    @staticmethod
-    def get_instance():
-        if RoomDomain.__instance is None:
-            RoomDomain()
-        return RoomDomain.__instance
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(RoomDomain, cls).__new__(cls)
+            print(cls)
+        return cls.instance
 
     @staticmethod
     def insert_room(room_name, capacity, office, white_board, video_projector):

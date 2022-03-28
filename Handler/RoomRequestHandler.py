@@ -3,13 +3,11 @@ from Exception.Exceptions import IncompleteInformationException
 
 
 class RequestHandler:
-    __instance = None
-
-    @staticmethod
-    def get_instance():
-        if RequestHandler.__instance is None:
-            RequestHandler()
-        return RequestHandler.__instance
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(RequestHandler, cls).__new__(cls)
+            print(cls)
+        return cls.instance
 
     @staticmethod
     def insert_room(room_record):

@@ -11,6 +11,9 @@ from Handler.RoomRequestHandler import RequestHandler
 app = Flask(__name__)
 
 
+# todo middleware, getinstance
+
+
 def check_admin():
     def _check_admin(f):
         @wraps(f)
@@ -41,7 +44,6 @@ def check_employee_or_admin():
     return _check_employee_or_admin
 
 
-# todo!
 @app.before_request
 def before_request_func():
     token = request.headers.get('Authorization')

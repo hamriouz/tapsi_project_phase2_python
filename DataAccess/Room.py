@@ -13,13 +13,11 @@ def get_database_collection():
 
 
 class RoomDataAccess:
-    __instance = None
-
-    @staticmethod
-    def get_instance():
-        if RoomDataAccess.__instance is None:
-            RoomDataAccess()
-        return RoomDataAccess.__instance
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(RoomDataAccess, cls).__new__(cls)
+            print(cls)
+        return cls.instance
 
     @staticmethod
     def insert_room(name, capacity, office, white_board, video_projector):
