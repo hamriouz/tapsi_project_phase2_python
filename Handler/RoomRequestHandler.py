@@ -1,5 +1,5 @@
-from Domain.Controller import RoomDomain
-from Exception.Exceptions import IncompleteInformationException
+from Domain.Room import Room
+from Util.Exceptions import IncompleteInformationException
 
 
 class RequestHandler:
@@ -11,15 +11,13 @@ class RequestHandler:
 
     @staticmethod
     def insert_room(room_record):
-        print(room_record)
         room_name = room_record["name"]
         capacity = room_record["capacity"]
         office = room_record["office"]
         white_board = room_record["white_board"]
         video_projector = room_record["video_projector"]
         if room_name and capacity and office and white_board and video_projector is not None:
-            room_domain = RoomDomain()
-            room_domain.create_room(room_name, capacity, office, white_board, video_projector)
+            Room(room_name, capacity, office, white_board, video_projector)
         else:
             raise IncompleteInformationException
 
@@ -30,18 +28,18 @@ class RequestHandler:
         office = room_record["office"]
         white_board = room_record["white_board"]
         video_projector = room_record["video_projector"]
-        room_domain = RoomDomain()
+        room = Room.get_room_by_name(room_name)
 
         if room_name is not None:
             if capacity is not None:
-                room_domain.update_capacity(room_name, capacity)
+                room.update_capacity(capacity)
             if office is not None:
-                room_domain.update_office(room_name, office)
+                room.update_office(office)
             if white_board is not None:
-                room_domain.update_white_board(room_name, white_board)
+                room.update_white_board(white_board)
             if video_projector is not None:
-                room_domain.update_video_projector(room_name, video_projector)
-            new_room_data = room_domain.get_room_data(room_name)
+                room.update_video_projector(video_projector)
+            new_room_data = room.get_room_data()
             return new_room_data
         else:
             raise IncompleteInformationException
@@ -50,13 +48,12 @@ class RequestHandler:
     def delete_room(room_record):
         room_name = room_record["name"]
         if room_name is not None:
-            room_domain = RoomDomain()
-            room_domain.delete_room(room_name)
+            room = Room.get_room_by_name(room_name)
+            room.delete_room()
         else:
             raise IncompleteInformationException
 
     @staticmethod
     def get_all_rooms():
-        room_domain = RoomDomain()
-        all_rooms = room_domain.get_all_rooms()
+        all_rooms = Room.get_all_rooms()
         return all_rooms

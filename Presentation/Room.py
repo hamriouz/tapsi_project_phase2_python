@@ -1,51 +1,13 @@
 import json
 
-from flask import Flask, request, jsonify, make_response, current_app
-from Authentication.Authenticator import Authenticator
+from flask import Flask, request, jsonify, make_response
+from Presentation.Decorator import check_employee_or_admin, check_admin
 
-from Exception.Exceptions import AddRoomException, IncompleteInformationException, NotLoggedInException, \
+from Util.Exceptions import AddRoomException, IncompleteInformationException, NotLoggedInException, \
     UpdateRoomException, DeleteRoomException
 from Handler.RoomRequestHandler import RequestHandler
 
 app = Flask(__name__)
-
-
-def check_employee_or_admin(function):
-    def wrapper(*args, **kwargs):
-        token = request.headers.get('Authorization')
-        if token is not None:
-            authenticator = Authenticator()
-            result = authenticator.authenticate_admin(token)
-            if result is None:
-                return current_app.ensure_sync(function)(token, *args, **kwargs)
-            else:
-                result = None
-                result = authenticator.authenticate_employee(token)
-                if result is None:
-                    return current_app.ensure_sync(function)(*args, **kwargs)
-                else:
-                    return {"message": result}, 401
-        return {"message": "Only a logged admin or employee can take this action"}, 401
-
-    wrapper.__name__ = function.__name__
-    return wrapper
-
-
-def check_admin(function):
-    def wrapper(*args, **kwargs):
-        token = request.headers.get('Authorization')
-        if token is not None:
-            authenticator = Authenticator()
-            result = authenticator.authenticate_admin(token)
-            if result is None:
-                return current_app.ensure_sync(function)(*args, **kwargs)
-            else:
-                return {"message": "Only a logged admin can take this action"}, 401
-        else:
-            return {"message": "Only a logged admin can take this action"}, 401
-
-    wrapper.__name__ = function.__name__
-    return wrapper
 
 
 @app.route('/RoomManagement/InsertRoom', methods=['POST'])
