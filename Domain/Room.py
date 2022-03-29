@@ -1,50 +1,55 @@
 from DataAccess.Room import RoomDataAccess
 
 
-class RoomDomain:
-    def __new__(cls):
-        if not hasattr(cls, 'instance'):
-            cls.instance = super(RoomDomain, cls).__new__(cls)
-            print(cls)
-        return cls.instance
+class Room:
+    def __init__(self, name, capacity, office, white_board, video_projector):
+        self.name = name
+        self.capacity = capacity
+        self.office = office
+        self.white_board = white_board
+        self.video_projector = video_projector
+        self.insert_to_database()
+
+    def insert_to_database(self):
+        data_access = RoomDataAccess()
+        data_access.insert_room(self.name, self.capacity, self.office, self.white_board, self.video_projector)
 
     @staticmethod
-    def insert_room(room_name, capacity, office, white_board, video_projector):
+    def get_room_by_name(name):
         data_access = RoomDataAccess()
-        data_access.insert_room(room_name, capacity, office, white_board, video_projector)
+        room_data = data_access.get_room_data(name)
+        return Room(room_data[0]['name'], room_data[0]['capacity'], room_data[0]['office'], room_data[0]['white_board'],
+                    room_data[0]['video_projector'])
 
-    @staticmethod
-    def update_capacity(room_name, room_capacity):
+    def update_capacity(self, capacity):
         data_access = RoomDataAccess()
-        data_access.update_capacity(room_name, room_capacity)
+        self.capacity = capacity
+        data_access.update_capacity(self.name, capacity)
 
-    @staticmethod
-    def update_office(room_name, office):
+    def update_office(self, office):
         data_access = RoomDataAccess()
-        data_access.update_office(room_name, office)
+        self.office = office
+        data_access.update_office(self.name, office)
 
-    @staticmethod
-    def update_white_board(room_name, white_board):
+    def update_white_board(self, white_board):
         data_access = RoomDataAccess()
-        data_access.update_white_board(room_name, white_board)
+        self.white_board = white_board
+        data_access.update_white_board(self.name, white_board)
 
-    @staticmethod
-    def update_video_projector(room_name, video_projector):
+    def update_video_projector(self, video_projector):
         data_access = RoomDataAccess()
-        data_access.update_video_projector(room_name, video_projector)
+        self.video_projector = video_projector
+        data_access.update_video_projector(self.name, video_projector)
 
-    @staticmethod
-    def delete_room(room_name):
+    def delete_room(self):
         data_access = RoomDataAccess()
-        data_access.delete_room(room_name)
+        data_access.delete_room(self.name)
 
-    @staticmethod
-    def get_room_data(room_name):
+    def get_room_data(self):
         data_access = RoomDataAccess()
-        return data_access.get_room_data(room_name)
+        return data_access.get_room_data(self.name)
 
     @staticmethod
     def get_all_rooms():
         data_access = RoomDataAccess()
         return data_access.get_all_rooms()
-

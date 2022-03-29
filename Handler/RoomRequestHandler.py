@@ -1,4 +1,4 @@
-from Domain.Room import RoomDomain
+from Domain.Controller import RoomDomain
 from Exception.Exceptions import IncompleteInformationException
 
 
@@ -11,6 +11,7 @@ class RequestHandler:
 
     @staticmethod
     def insert_room(room_record):
+        print(room_record)
         room_name = room_record["name"]
         capacity = room_record["capacity"]
         office = room_record["office"]
@@ -18,7 +19,7 @@ class RequestHandler:
         video_projector = room_record["video_projector"]
         if room_name and capacity and office and white_board and video_projector is not None:
             room_domain = RoomDomain()
-            room_domain.insert_room(room_name, capacity, office, white_board, video_projector)
+            room_domain.create_room(room_name, capacity, office, white_board, video_projector)
         else:
             raise IncompleteInformationException
 

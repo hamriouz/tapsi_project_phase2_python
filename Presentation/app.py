@@ -49,7 +49,7 @@ def check_admin(function):
 
 
 @app.route('/RoomManagement/InsertRoom', methods=['POST'])
-@check_admin
+# @check_admin
 def insert_room():
     try:
         request_handler = RequestHandler()
@@ -61,12 +61,12 @@ def insert_room():
         message = {"message": "Only a logged in admin can add rooms!"}
         return make_response(jsonify(message), 400)
     except IncompleteInformationException:
-        message = {"message": "Only a logged in admin can add rooms!"}
+        message = {"message": "please fill in all the information"}
         return make_response(jsonify(message), 401)
 
 
 @app.route('/RoomManagement/GetRooms', methods=['GET'])
-@check_employee_or_admin
+# @check_employee_or_admin
 def get_rooms():
     try:
         request_handler = RequestHandler()
@@ -98,7 +98,7 @@ def update_rooms():
 
 
 @app.route('/RoomManagement/DeleteRoom', methods=['POST'])
-@check_admin
+# @check_admin
 def delete_rooms():
     try:
         request_handler = RequestHandler()

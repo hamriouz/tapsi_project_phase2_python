@@ -13,6 +13,7 @@ def get_database_collection():
 
 
 class RoomDataAccess:
+
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(RoomDataAccess, cls).__new__(cls)
@@ -77,4 +78,5 @@ class RoomDataAccess:
     @staticmethod
     def delete_room(name):
         data_base_collection = get_database_collection()
-        data_base_collection.delete_one({"name": name})
+        data_base_collection.delete_many({"name": name})
+
