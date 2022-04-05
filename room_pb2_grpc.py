@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import room_pb2 as room__pb2
+import room_pb2 as gRPC_dot_proto_dot_room__pb2
 
 
 class RoomStub(object):
@@ -14,17 +14,28 @@ class RoomStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.getDetails = channel.unary_unary(
-                '/room.Room/getDetails',
-                request_serializer=room__pb2.RoomRequest.SerializeToString,
-                response_deserializer=room__pb2.RoomResponse.FromString,
+        self.getRoomIdentifier = channel.unary_unary(
+                '/room.Room/getRoomIdentifier',
+                request_serializer=gRPC_dot_proto_dot_room__pb2.RoomIdentifierRequest.SerializeToString,
+                response_deserializer=gRPC_dot_proto_dot_room__pb2.RoomIdentifierResponse.FromString,
+                )
+        self.getRoomCapacity = channel.unary_unary(
+                '/room.Room/getRoomCapacity',
+                request_serializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityRequest.SerializeToString,
+                response_deserializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityResponse.FromString,
                 )
 
 
 class RoomServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def getDetails(self, request, context):
+    def getRoomIdentifier(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getRoomCapacity(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -33,10 +44,15 @@ class RoomServicer(object):
 
 def add_RoomServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'getDetails': grpc.unary_unary_rpc_method_handler(
-                    servicer.getDetails,
-                    request_deserializer=room__pb2.RoomRequest.FromString,
-                    response_serializer=room__pb2.RoomResponse.SerializeToString,
+            'getRoomIdentifier': grpc.unary_unary_rpc_method_handler(
+                    servicer.getRoomIdentifier,
+                    request_deserializer=gRPC_dot_proto_dot_room__pb2.RoomIdentifierRequest.FromString,
+                    response_serializer=gRPC_dot_proto_dot_room__pb2.RoomIdentifierResponse.SerializeToString,
+            ),
+            'getRoomCapacity': grpc.unary_unary_rpc_method_handler(
+                    servicer.getRoomCapacity,
+                    request_deserializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityRequest.FromString,
+                    response_serializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -49,7 +65,7 @@ class Room(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def getDetails(request,
+    def getRoomIdentifier(request,
             target,
             options=(),
             channel_credentials=None,
@@ -59,8 +75,25 @@ class Room(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/room.Room/getDetails',
-            room__pb2.RoomRequest.SerializeToString,
-            room__pb2.RoomResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/room.Room/getRoomIdentifier',
+            gRPC_dot_proto_dot_room__pb2.RoomIdentifierRequest.SerializeToString,
+            gRPC_dot_proto_dot_room__pb2.RoomIdentifierResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getRoomCapacity(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/room.Room/getRoomCapacity',
+            gRPC_dot_proto_dot_room__pb2.RoomCapacityRequest.SerializeToString,
+            gRPC_dot_proto_dot_room__pb2.RoomCapacityResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

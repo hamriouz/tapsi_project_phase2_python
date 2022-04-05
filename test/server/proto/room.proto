@@ -22,3 +22,5 @@ message RoomDetails {
   bool whiteboard = 4;
   bool projector = 5;
 }
+
+
