@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import room_pb2 as gRPC_dot_proto_dot_room__pb2
+from test.server.proto import room_pb2 as gRPC_dot_proto_dot_room__pb2
 
 
 class RoomStub(object):
@@ -24,11 +24,6 @@ class RoomStub(object):
                 request_serializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityRequest.SerializeToString,
                 response_deserializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityResponse.FromString,
                 )
-        self.getAllRoomsInOffice = channel.unary_unary(
-                '/room.Room/getAllRoomsInOffice',
-                request_serializer=gRPC_dot_proto_dot_room__pb2.OfficeName.SerializeToString,
-                response_deserializer=gRPC_dot_proto_dot_room__pb2.RoomsInOffice.FromString,
-                )
 
 
 class RoomServicer(object):
@@ -46,12 +41,6 @@ class RoomServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def getAllRoomsInOffice(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_RoomServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -64,11 +53,6 @@ def add_RoomServicer_to_server(servicer, server):
                     servicer.getRoomCapacity,
                     request_deserializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityRequest.FromString,
                     response_serializer=gRPC_dot_proto_dot_room__pb2.RoomCapacityResponse.SerializeToString,
-            ),
-            'getAllRoomsInOffice': grpc.unary_unary_rpc_method_handler(
-                    servicer.getAllRoomsInOffice,
-                    request_deserializer=gRPC_dot_proto_dot_room__pb2.OfficeName.FromString,
-                    response_serializer=gRPC_dot_proto_dot_room__pb2.RoomsInOffice.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -111,22 +95,5 @@ class Room(object):
         return grpc.experimental.unary_unary(request, target, '/room.Room/getRoomCapacity',
             gRPC_dot_proto_dot_room__pb2.RoomCapacityRequest.SerializeToString,
             gRPC_dot_proto_dot_room__pb2.RoomCapacityResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def getAllRoomsInOffice(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/room.Room/getAllRoomsInOffice',
-            gRPC_dot_proto_dot_room__pb2.OfficeName.SerializeToString,
-            gRPC_dot_proto_dot_room__pb2.RoomsInOffice.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

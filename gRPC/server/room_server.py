@@ -1,15 +1,11 @@
-import json
+from concurrent import futures
 
 import grpc
-from concurrent import futures
 from bson.objectid import ObjectId
-
-from bson import json_util
-from flask import jsonify
 from pymongo import MongoClient
 
-import room_pb2_grpc
 import room_pb2
+import room_pb2_grpc
 
 connection_string = "mongodb://127.0.0.1:27017/rooms"
 client = MongoClient(connection_string)
@@ -24,10 +20,16 @@ class RoomServicer(room_pb2_grpc.RoomServicer):
         return room_pb2.RoomIdentifierResponse(room_id=room_id)
 
     def getRoomCapacity(self, request, context):
-        id = request.room_identifier
-        objInstance = ObjectId(id)
-        capacity = collection.find_one({"_id": objInstance})["capacity"]
+        room_id = request.room_identifier
+        obj_instance = ObjectId(room_id)
+        capacity = collection.find_one({"_id": obj_instance})["capacity"]
         return room_pb2.RoomCapacityResponse(capacity=capacity)
+
+    def getAllRoomsInOffice(self, request, context):
+        office = request.office
+        office_filter = {"office": office}
+        all_rooms = collection.find(office_filter)
+        return room_pb2.RoomsInOffice(AllRoomsInOffice=all_rooms)
 
 
 def main():

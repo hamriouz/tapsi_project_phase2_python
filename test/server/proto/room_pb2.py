@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15gRPC/proto/room.proto\x12\x04room\"9\n\x15RoomIdentifierRequest\x12\x0e\n\x06office\x18\x01 \x01(\t\x12\x10\n\x08roomName\x18\x02 \x01(\t\"0\n\x16RoomIdentifierResponse\x12\x16\n\x0eroomIdentifier\x18\x01 \x01(\t\"-\n\x13RoomCapacityRequest\x12\x16\n\x0eroomIdentifier\x18\x01 \x01(\t\"(\n\x14RoomCapacityResponse\x12\x10\n\x08\x63\x61pacity\x18\x01 \x01(\x05\" \n\nOfficeName\x12\x12\n\nofficeName\x18\x01 \x01(\t\"6\n\rRoomsInOffice\x12%\n\x05rooms\x18\x01 \x03(\x0b\x32\x16.room.AllRoomsInOffice\"i\n\x10\x41llRoomsInOffice\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x63\x61pacity\x18\x02 \x01(\t\x12\x0e\n\x06office\x18\x03 \x01(\t\x12\x12\n\nwhiteboard\x18\x04 \x01(\x08\x12\x11\n\tprojector\x18\x05 \x01(\x08\x32\xe4\x01\n\x04Room\x12P\n\x11getRoomIdentifier\x12\x1b.room.RoomIdentifierRequest\x1a\x1c.room.RoomIdentifierResponse\"\x00\x12J\n\x0fgetRoomCapacity\x12\x19.room.RoomCapacityRequest\x1a\x1a.room.RoomCapacityResponse\"\x00\x12>\n\x13getAllRoomsInOffice\x12\x10.room.OfficeName\x1a\x13.room.RoomsInOffice\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15gRPC/proto/room.proto\x12\x04room\"9\n\x15RoomIdentifierRequest\x12\x0e\n\x06office\x18\x01 \x01(\t\x12\x10\n\x08roomName\x18\x02 \x01(\t\"0\n\x16RoomIdentifierResponse\x12\x16\n\x0eroomIdentifier\x18\x01 \x01(\t\"-\n\x13RoomCapacityRequest\x12\x16\n\x0eroomIdentifier\x18\x01 \x01(\t\"(\n\x14RoomCapacityResponse\x12\x10\n\x08\x63\x61pacity\x18\x01 \x01(\x05\x32\xa4\x01\n\x04Room\x12P\n\x11getRoomIdentifier\x12\x1b.room.RoomIdentifierRequest\x1a\x1c.room.RoomIdentifierResponse\"\x00\x12J\n\x0fgetRoomCapacity\x12\x19.room.RoomCapacityRequest\x1a\x1a.room.RoomCapacityResponse\"\x00\x62\x06proto3')
 
 
 
@@ -22,9 +22,6 @@ _ROOMIDENTIFIERREQUEST = DESCRIPTOR.message_types_by_name['RoomIdentifierRequest
 _ROOMIDENTIFIERRESPONSE = DESCRIPTOR.message_types_by_name['RoomIdentifierResponse']
 _ROOMCAPACITYREQUEST = DESCRIPTOR.message_types_by_name['RoomCapacityRequest']
 _ROOMCAPACITYRESPONSE = DESCRIPTOR.message_types_by_name['RoomCapacityResponse']
-_OFFICENAME = DESCRIPTOR.message_types_by_name['OfficeName']
-_ROOMSINOFFICE = DESCRIPTOR.message_types_by_name['RoomsInOffice']
-_ALLROOMSINOFFICE = DESCRIPTOR.message_types_by_name['AllRoomsInOffice']
 RoomIdentifierRequest = _reflection.GeneratedProtocolMessageType('RoomIdentifierRequest', (_message.Message,), {
   'DESCRIPTOR' : _ROOMIDENTIFIERREQUEST,
   '__module__' : 'gRPC.proto.room_pb2'
@@ -53,27 +50,6 @@ RoomCapacityResponse = _reflection.GeneratedProtocolMessageType('RoomCapacityRes
   })
 _sym_db.RegisterMessage(RoomCapacityResponse)
 
-OfficeName = _reflection.GeneratedProtocolMessageType('OfficeName', (_message.Message,), {
-  'DESCRIPTOR' : _OFFICENAME,
-  '__module__' : 'gRPC.proto.room_pb2'
-  # @@protoc_insertion_point(class_scope:room.OfficeName)
-  })
-_sym_db.RegisterMessage(OfficeName)
-
-RoomsInOffice = _reflection.GeneratedProtocolMessageType('RoomsInOffice', (_message.Message,), {
-  'DESCRIPTOR' : _ROOMSINOFFICE,
-  '__module__' : 'gRPC.proto.room_pb2'
-  # @@protoc_insertion_point(class_scope:room.RoomsInOffice)
-  })
-_sym_db.RegisterMessage(RoomsInOffice)
-
-AllRoomsInOffice = _reflection.GeneratedProtocolMessageType('AllRoomsInOffice', (_message.Message,), {
-  'DESCRIPTOR' : _ALLROOMSINOFFICE,
-  '__module__' : 'gRPC.proto.room_pb2'
-  # @@protoc_insertion_point(class_scope:room.AllRoomsInOffice)
-  })
-_sym_db.RegisterMessage(AllRoomsInOffice)
-
 _ROOM = DESCRIPTOR.services_by_name['Room']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
@@ -86,12 +62,6 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _ROOMCAPACITYREQUEST._serialized_end=185
   _ROOMCAPACITYRESPONSE._serialized_start=187
   _ROOMCAPACITYRESPONSE._serialized_end=227
-  _OFFICENAME._serialized_start=229
-  _OFFICENAME._serialized_end=261
-  _ROOMSINOFFICE._serialized_start=263
-  _ROOMSINOFFICE._serialized_end=317
-  _ALLROOMSINOFFICE._serialized_start=319
-  _ALLROOMSINOFFICE._serialized_end=424
-  _ROOM._serialized_start=427
-  _ROOM._serialized_end=655
+  _ROOM._serialized_start=230
+  _ROOM._serialized_end=394
 # @@protoc_insertion_point(module_scope)

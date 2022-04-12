@@ -1,14 +1,9 @@
-import json
-
 import grpc
 from concurrent import futures
 
-from bson import json_util
-from flask import jsonify
 from pymongo import MongoClient
 
-import room_pb2_grpc
-import room_pb2
+from test.server.proto import room_pb2, room_pb2_grpc
 
 connection_string = "mongodb://127.0.0.1:27017/rooms"
 client = MongoClient(connection_string)
